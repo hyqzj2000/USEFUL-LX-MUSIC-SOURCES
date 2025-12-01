@@ -1,15 +1,15 @@
 /*!
- * @name ikun音源(赞助版)(过期时间2099-12-31 23:59:59)
- * @description 支持所有平台全音质, QQ群970586864
- * @version v16
+ * @name ikun音源(公益版)
+ * @description 支持酷我网易咪咕全音质,Q970586864
+ * @version v17
  * @author ikunshare
  */
 
 const DEV_ENABLE = false
 const UPDATE_ENABLE = true
-const API_URL = "http://103.217.184.26:9000"
-const API_KEY = "KAWANG_63b29688-GE5LEV8TPCJO4U6N"
-const SCRIPT_MD5 = "ff28a451304438e34d845f34b703a80d";
+const API_URL = "https://api.ikunshare.com"
+const API_KEY = "public_source"
+const SCRIPT_MD5 = "2f4f74be852e21277ddd3fbeccf8e27f";
 const MUSIC_QUALITY = JSON.parse('{"kw":["128k","320k","flac","flac24bit","hires"],"mg":["128k","320k","flac","flac24bit","hires"],"kg":["128k","320k","flac","flac24bit","hires","atmos","master"],"tx":["128k","320k","flac","flac24bit","hires","atmos","atmos_plus","master"],"wy":["128k","320k","flac","flac24bit","hires","atmos","master"],"git":["128k","320k","flac"]}');
 
 const MUSIC_SOURCE = Object.keys(MUSIC_QUALITY);
