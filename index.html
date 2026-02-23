@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TZB679 | LX Music 音源分享</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    
     <style>
         * {
             margin: 0;
@@ -16,183 +14,363 @@
         }
         
         body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-            padding-bottom: 40px;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
             overflow-x: hidden;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* 新增：背景动态粒子效果 */
-        #particles-js {
+        /* 背景图片容器 */
+        .background-container {
             position: fixed;
-            width: 100%;
-            height: 100%;
             top: 0;
             left: 0;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        /* 修改header，添加动画 */
-        header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
-            padding: 100px 0 80px;
-            text-align: center;
-            margin-bottom: 40px;
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
             overflow: hidden;
         }
         
-        /* 添加header背景动画 */
-        header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to right,
-                transparent 20%,
-                rgba(255, 255, 255, 0.1) 50%,
-                transparent 80%
-            );
-            transform: rotate(30deg);
-            animation: shine 8s infinite linear;
-            z-index: 0;
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%) rotate(30deg); }
-            100% { transform: translateX(100%) rotate(30deg); }
-        }
-        
-        .blog-title {
-            font-size: 2.8rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 1;
-            animation: fadeInDown 1s ease-out;
-        }
-        
-        .blog-subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto 25px;
-            position: relative;
-            z-index: 1;
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-        
-        .publish-date {
-            background-color: rgba(255, 255, 255, 0.15);
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            position: relative;
-            z-index: 1;
-            animation: fadeInUp 1s ease-out 0.6s both;
-            transition: transform 0.3s ease;
-        }
-        
-        .publish-date:hover {
-            transform: scale(1.05);
-        }
-        
-        .content-section {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        @media (min-width: 992px) {
-            .content-section {
-                grid-template-columns: 3fr 1fr;
-            }
-        }
-        
-        /* 卡片悬浮动画增强 */
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 25px;
-            opacity: 0;
-            animation: fadeInRight 0.8s ease-out forwards;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* 为每个卡片添加不同的延迟动画 */
-        .card:nth-child(1) { animation-delay: 0.2s; }
-        .card:nth-child(2) { animation-delay: 0.4s; }
-        .card:nth-child(3) { animation-delay: 0.6s; }
-        
-        .card::before {
-            content: '';
+        #background-image {
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #6a11cb, transparent);
-            transition: left 0.6s ease;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.5s ease, opacity 0.5s ease;
         }
         
-        .card:hover::before {
-            left: 100%;
+        /* 默认背景图（深色渐变） */
+        .default-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e1a3a 0%, #0f172a 100%);
+            z-index: -3;
         }
         
-        .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(106, 17, 203, 0.15);
+        /* 控制面板 */
+        .control-panel {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.95);
+            border-radius: 12px;
+            padding: 15px;
+            width: 300px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transform: translateX(0);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
         }
         
-        /* 图标动画 */
-        .card h2 i {
-            color: #6a11cb;
-            display: inline-block;
-            transition: transform 0.5s ease;
+        .control-panel.collapsed {
+            transform: translateX(calc(100% - 50px));
         }
         
-        .card:hover h2 i {
-            transform: rotate(360deg) scale(1.2);
+        .control-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(156, 39, 176, 0.2);
         }
         
-        .card h2 {
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #f1f1f1;
+        .control-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ce93d8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .toggle-controls {
+            background: rgba(156, 39, 176, 0.1);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            color: #ce93d8;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .toggle-controls:hover {
+            background: rgba(156, 39, 176, 0.2);
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .control-value {
+            color: #ce93d8;
+            font-weight: 600;
+        }
+        
+        .slider-container {
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
-        .intro-text {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-            color: #444;
-            line-height: 1.8;
+        input[type="range"] {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(156, 39, 176, 0.2);
+            border-radius: 3px;
+            outline: none;
         }
         
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #9c27b0;
+            cursor: pointer;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .file-input-label {
+            display: block;
+            background: linear-gradient(135deg, #9c27b0, #ba68c8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .file-input-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.4);
+        }
+        
+        #image-upload {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .reset-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+        
+        /* 头部样式 */
+        header {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 1.5rem 2rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 10;
+            border-bottom: 1px solid rgba(156, 39, 176, 0.2);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .logo-icon {
+            font-size: 2.2rem;
+            color: #ba68c8;
+            animation: pulse 2s infinite;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #ffffff, #e1bee7);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            color: #cbd5e1;
+            margin-top: 4px;
+        }
+        
+        .datetime-container {
+            text-align: right;
+            background-color: rgba(15, 23, 42, 0.6);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            min-width: 250px;
+            margin-left: 20px;
+        }
+        
+        .datetime-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(156, 39, 176, 0.4);
+        }
+        
+        #current-date {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ce93d8;
+            margin-bottom: 5px;
+        }
+        
+        #current-time {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+        
+        /* 主要内容区 */
+        .main-content {
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* 网格布局 - 主内容区和侧边栏 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        /* 卡片通用样式 */
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(156, 39, 176, 0.15);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            margin-bottom: 25px;
+        }
+        
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, transparent 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(156, 39, 176, 0.2);
+            border-color: rgba(156, 39, 176, 0.4);
+        }
+        
+        .card:hover:before {
+            opacity: 1;
+        }
+        
+        .card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(156, 39, 176, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e1bee7;
+        }
+        
+        .card h2 i {
+            color: #ba68c8;
+        }
+        
+        .intro-text {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+        
+        /* 协议列表 */
         .protocol-list {
             list-style-type: none;
             padding-left: 0;
@@ -200,10 +378,11 @@
         
         .protocol-list li {
             padding: 12px 0;
-            border-bottom: 1px dashed #eee;
+            border-bottom: 1px dashed rgba(156, 39, 176, 0.2);
             display: flex;
             align-items: flex-start;
             transition: padding-left 0.3s ease;
+            color: #cbd5e1;
         }
         
         .protocol-list li:hover {
@@ -215,7 +394,7 @@
         }
         
         .protocol-list li i {
-            color: #6a11cb;
+            color: #ba68c8;
             margin-right: 12px;
             margin-top: 3px;
             flex-shrink: 0;
@@ -226,22 +405,23 @@
             transform: scale(1.2);
         }
         
-        /* 链接项动画增强 */
-        .link-section {
-            margin-top: 25px;
+        /* 链接项 */
+        .links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         
         .link-item {
             display: flex;
             align-items: center;
             padding: 15px;
-            background-color: #f9f9ff;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid #6a11cb;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background-color: rgba(30, 41, 59, 0.8);
+            border-radius: 12px;
+            border-left: 4px solid #9c27b0;
+            transition: all 0.4s ease;
             text-decoration: none;
-            color: #333;
+            color: #e2e8f0;
             position: relative;
             overflow: hidden;
         }
@@ -253,7 +433,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
             transform: translateX(-100%);
             transition: transform 0.6s ease;
         }
@@ -263,21 +443,21 @@
         }
         
         .link-item:hover {
-            background-color: #f0f0ff;
-            transform: translateX(10px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.1);
+            background-color: rgba(45, 55, 72, 0.9);
+            transform: translateX(5px);
+            border-left-color: #ba68c8;
         }
         
         .link-item i {
             font-size: 1.5rem;
-            color: #6a11cb;
+            color: #ba68c8;
             margin-right: 15px;
             width: 30px;
             transition: transform 0.3s ease;
         }
         
         .link-item:hover i {
-            transform: scale(1.2) rotate(5deg);
+            transform: scale(1.1);
         }
         
         .link-text {
@@ -287,13 +467,13 @@
         .link-text strong {
             display: block;
             margin-bottom: 5px;
-            color: #2c3e50;
+            color: #ffffff;
             font-size: 1.1rem;
         }
         
         .link-text span {
-            font-size: 0.9rem;
-            color: #666;
+            font-size: 0.85rem;
+            color: #94a3b8;
             word-break: break-all;
             display: block;
             margin-top: 3px;
@@ -301,182 +481,207 @@
         }
         
         .link-item:hover .link-text span {
-            color: #6a11cb;
+            color: #ce93d8;
         }
         
-        /* 警告框动画 */
+        /* ===== 重要提醒 - 红色醒目样式 ===== */
         .warning-box {
-            background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 30px;
-            border-left: 5px solid #ff7e5f;
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.25) 0%, rgba(185, 28, 28, 0.25) 100%);
+            border-radius: 16px;
+            padding: 25px 20px;
+            margin-top: 20px;
+            border: 2px solid #ef4444;
             display: flex;
             align-items: center;
-            animation: pulseWarning 2s infinite;
-            transform-origin: center;
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+            backdrop-filter: blur(10px);
+            animation: pulseRed 2s infinite ease-in-out;
         }
         
-        @keyframes pulseWarning {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+        @keyframes pulseRed {
+            0%, 100% { 
+                box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+                border-color: #ef4444;
+            }
+            50% { 
+                box-shadow: 0 15px 35px rgba(239, 68, 68, 0.6);
+                border-color: #ff6b6b;
+            }
         }
         
         .warning-box i {
-            font-size: 2rem;
-            color: #ff7e5f;
+            font-size: 2.5rem;
+            color: #ff6b6b;
             margin-right: 20px;
             flex-shrink: 0;
-            animation: shake 0.5s ease-in-out infinite alternate;
+            animation: shakeRed 0.6s ease-in-out infinite;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
         }
         
-        @keyframes shake {
-            0% { transform: rotate(-5deg); }
-            100% { transform: rotate(5deg); }
+        @keyframes shakeRed {
+            0%, 100% { transform: rotate(-8deg) scale(1); }
+            50% { transform: rotate(8deg) scale(1.1); }
         }
         
-        /* 侧边栏动画 */
+        .warning-box div {
+            flex: 1;
+        }
+        
+        .warning-box strong {
+            font-size: 1.3rem;
+            color: #ff8a8a;
+            display: block;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .warning-box div div {
+            font-size: 1.1rem;
+            color: #ffffff;
+            line-height: 1.6;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        /* 侧边栏卡片 */
         .sidebar {
-            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
         }
         
         .sidebar-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-            margin-bottom: 25px;
-            opacity: 0;
-            animation: fadeInLeft 0.8s ease-out forwards;
-            transition: transform 0.3s ease;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(156, 39, 176, 0.15);
+            backdrop-filter: blur(10px);
         }
-        
-        .sidebar-card:nth-child(1) { animation-delay: 0.3s; }
-        .sidebar-card:nth-child(2) { animation-delay: 0.5s; }
-        .sidebar-card:nth-child(3) { animation-delay: 0.7s; }
         
         .sidebar-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(156, 39, 176, 0.2);
+            border-color: rgba(156, 39, 176, 0.4);
         }
         
         .sidebar-card h3 {
-            color: #2c3e50;
-            margin-bottom: 20px;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
             padding-bottom: 10px;
-            border-bottom: 2px solid #f1f1f1;
+            border-bottom: 2px solid rgba(156, 39, 176, 0.3);
             display: flex;
             align-items: center;
             gap: 10px;
+            color: #e1bee7;
         }
         
         .sidebar-card h3 i {
-            color: #6a11cb;
-            transition: transform 0.5s ease;
-        }
-        
-        .sidebar-card:hover h3 i {
-            transform: rotate(360deg);
+            color: #ba68c8;
         }
         
         .update-info {
-            background-color: #f0f7ff;
+            background-color: rgba(15, 23, 42, 0.8);
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
-        }
-        
-        .update-info:hover {
-            transform: scale(1.03);
+            margin-bottom: 15px;
+            border-left: 3px solid #9c27b0;
         }
         
         .update-date {
             font-weight: bold;
-            color: #6a11cb;
+            color: #ce93d8;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
         
-        /* 标签动画 */
+        /* 标签 */
         .tag-list {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         
         .tag {
-            background-color: #f1f1f1;
-            padding: 8px 15px;
+            background-color: rgba(156, 39, 176, 0.15);
+            padding: 6px 12px;
             border-radius: 50px;
             font-size: 0.85rem;
-            color: #555;
+            color: #ce93d8;
             transition: all 0.3s ease;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .tag::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background-color: rgba(106, 17, 203, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
+            border: 1px solid rgba(156, 39, 176, 0.3);
         }
         
         .tag:hover {
-            background-color: #6a11cb;
+            background-color: #9c27b0;
             color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.2);
+            transform: translateY(-2px);
         }
         
-        .tag:hover::before {
-            width: 100%;
-            height: 100%;
+        /* 联系方式 */
+        .contact-info {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            font-size: 0.95rem;
         }
         
-        /* 页脚动画 */
+        .contact-info i {
+            color: #ba68c8;
+            margin-right: 8px;
+        }
+        
+        /* 页脚 */
         footer {
             text-align: center;
-            margin-top: 50px;
-            color: #777;
+            padding: 1.5rem;
+            background-color: rgba(15, 23, 42, 0.9);
+            border-top: 1px solid rgba(156, 39, 176, 0.2);
+            color: #94a3b8;
             font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 5;
+            margin-top: 40px;
+        }
+        
+        /* 动画效果 */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card, .sidebar-card {
+            animation: fadeIn 0.6s ease-out forwards;
             opacity: 0;
-            animation: fadeInUp 1s ease-out 1s forwards;
         }
         
-        .footer-line {
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(to right, #6a11cb, #2575fc);
-            margin: 0 auto 20px;
-            border-radius: 2px;
-            animation: expandWidth 1.5s ease-out 1.2s forwards;
-            transform-origin: left;
-            transform: scaleX(0);
-        }
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
         
-        @keyframes expandWidth {
-            to { transform: scaleX(1); }
-        }
-        
-        /* 新增：滚动到顶部按钮 */
+        /* 滚动到顶部按钮 */
         .scroll-to-top {
             position: fixed;
             bottom: 30px;
             right: 30px;
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background: linear-gradient(135deg, #9c27b0, #ba68c8);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -488,7 +693,8 @@
             transform: translateY(20px);
             transition: all 0.3s ease;
             z-index: 100;
-            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
         
         .scroll-to-top.visible {
@@ -498,62 +704,17 @@
         
         .scroll-to-top:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.4);
+            box-shadow: 0 10px 20px rgba(156, 39, 176, 0.4);
         }
         
-        /* 自定义动画 */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes fadeInRight {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        @keyframes fadeInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        /* 新增：音乐播放控制按钮 */
+        /* 音乐控制按钮 */
         .music-control {
             position: fixed;
             bottom: 30px;
             left: 30px;
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            background: linear-gradient(135deg, #9c27b0, #ba68c8);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -562,67 +723,223 @@
             font-size: 1.5rem;
             cursor: pointer;
             z-index: 100;
-            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
             transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
         
         .music-control:hover {
             transform: scale(1.1);
-            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.4);
         }
         
         .music-control.paused i {
             animation: pulse 2s infinite;
         }
         
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            
+            .logo {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .datetime-container {
+                width: 100%;
+                text-align: center;
+                margin-left: 0;
+                min-width: auto;
+            }
+            
+            .control-panel {
+                width: 280px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+            
+            .logo-text h1 {
+                font-size: 1.5rem;
+            }
+            
+            .card h2 {
+                font-size: 1.4rem;
+            }
+            
+            .link-item {
+                padding: 12px;
+            }
+            
+            .link-item i {
+                font-size: 1.3rem;
+            }
+            
+            .music-control, .scroll-to-top {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+            
+            .music-control {
+                left: 15px;
+                bottom: 15px;
+            }
+            
+            .scroll-to-top {
+                right: 15px;
+                bottom: 15px;
+            }
+            
+            .warning-box {
+                padding: 18px 15px;
+            }
+            
+            .warning-box i {
+                font-size: 2rem;
+            }
+            
+            .warning-box strong {
+                font-size: 1.1rem;
+            }
+            
+            .warning-box div div {
+                font-size: 0.95rem;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(156, 39, 176, 0.3);
+            border-radius: 50%;
+            border-top-color: #9c27b0;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 错误提示 */
+        .error-message {
+            color: #fca5a5;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
         }
     </style>
-    
-    <!-- 添加音频元素（隐藏）并设置自动循环播放 -->
-    <audio id="background-music" loop>
-        <!-- 替换下面的 src 为要播放的音乐地址 -->
-        <source src="https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/bgm-new.mp3" type="audio/mpeg">
-    </audio>
 </head>
 <body>
-    <!-- 背景粒子效果容器 -->
-    <div id="particles-js"></div>
+    <!-- 背景图片容器 -->
+    <div class="background-container">
+        <div class="default-background"></div>
+        <img id="background-image" src="https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/Robin-UHD.jpg" alt="自定义背景" style="opacity: 0.7; filter: blur(3px);">
+    </div>
     
+    <!-- 控制面板 -->
+    <div class="control-panel">
+        <div class="control-header">
+            <div class="control-title">
+                <i class="fas fa-sliders-h"></i>
+                背景设置
+            </div>
+            <button class="toggle-controls" id="toggle-controls">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">
+                透明度
+                <span class="control-value" id="opacity-value">70%</span>
+            </label>
+            <div class="slider-container">
+                <input type="range" id="opacity-slider" min="10" max="100" value="70">
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">
+                模糊度
+                <span class="control-value" id="blur-value">3px</span>
+            </label>
+            <div class="slider-container">
+                <input type="range" id="blur-slider" min="0" max="20" value="3">
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="file-input-container">
+                <label class="file-input-label">
+                    <i class="fas fa-image"></i>
+                    选择本地图片
+                </label>
+                <input type="file" id="image-upload" accept="image/*">
+            </div>
+            <button class="reset-btn" id="reset-background">
+                <i class="fas fa-undo"></i>
+                重置为默认
+            </button>
+        </div>
+    </div>
+
     <!-- 音乐控制按钮 -->
     <div class="music-control" id="music-control">
         <i class="fas fa-music"></i>
     </div>
-    
+
+    <!-- 头部区域 -->
     <header>
-        <div class="container">
-            <h1 class="blog-title">LX Music 音源分享</h1>
-            <p class="blog-subtitle">搜集了自本人使用 LX Music 以来整理的各种音源，持续更新中~</p>
-            <div class="publish-date">
-                <i class="far fa-calendar-alt"></i> 最后更新：2026年2月
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-headphones logo-icon"></i>
+                <div class="logo-text">
+                    <h1>LX Music 音源分享</h1>
+                    <p>搜集整理各种音源，持续更新中~</p>
+                </div>
+            </div>
+            <div class="datetime-container">
+                <div id="current-date">正在加载日期...</div>
+                <div id="current-time">正在加载时间...</div>
             </div>
         </div>
     </header>
-    
-    <div class="container">
-        <div class="content-section">
-            <main>
+
+    <!-- 主要内容区域 - 使用网格布局 -->
+    <main class="main-content">
+        <div class="content-grid">
+            <!-- 左侧主内容区 -->
+            <div class="main-area">
                 <div class="card">
                     <h2><i class="fas fa-compact-disc"></i> 项目介绍</h2>
                     <p class="intro-text">
                         这里整理了关于使用LX Music 而搜集的各种音源，包括高质量 Hi-Fi 示例。所有音源均由社区开发者创作，本人仅做整理分享。音乐平台不易，请支持正版，低调使用！
                     </p>
                     
-                    <div class="link-section">
+                    <div class="links-grid">
                         <a href="https://github.com/TZB679/USEFUL-LX-MUSIC-SOURCES/releases" class="link-item" target="_blank">
                             <i class="fas fa-archive"></i>
                             <div class="link-text">
-                                <strong>下载（点击进入本人发布的Releases页面）</strong>
-                                <span>https://www.123912.com/s/6OBFTd-aHHZh （部分历史版本，包含 Hi-Fi 示例和系统镜像站）</span>
+                                <strong>下载（点击进入Releases页面）</strong>
                                 <span>https://github.com/TZB679/USEFUL-LX-MUSIC-SOURCES/releases</span>
-
                             </div>
                         </a>
                     </div>
@@ -657,49 +974,46 @@
                 <div class="card">
                     <h2><i class="fas fa-download"></i> 资源下载</h2>
                     <p class="intro-text">
-                        以下是其他可用的下载方式：
+                        以下是可用的下载方式（点击链接直接访问）：
                     </p>
                     
-                   <div class="link-section">
+                    <div class="links-grid">
                         <a href="https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/%5B%E4%B8%8D%E7%A8%B3%E5%AE%9A%5DLX(%E9%9D%9E%E5%AE%98%E6%96%B9)%E5%85%AC%E4%BC%97%E5%8F%B7%E9%9F%B3%E6%BA%90%20v4.js" class="link-item" target="_blank">
                             <i class="fas fa-cloud-download-alt"></i>
                             <div class="link-text">
-                                <strong>直接可用的源1（点击下载）</strong>
-                                <span>直接可用，畅享音乐带来的美好体验（不稳定）</span>
+                                <strong>直接可用的源1</strong>
+                                <span>直接可用（不稳定）</span>
                             </div>
                         </a>
 
                         <a href="https://c.wwwweb.top/" class="link-item" target="_blank">
                             <i class="fas fa-cloud-download-alt"></i>
                             <div class="link-text">
-                                <strong>直接可用的源2（点击下载）</strong>
+                                <strong>直接可用的源2</strong>
                                 <span>部分平台有限制</span>
                             </div>
                         </a>
 
-                         <a href="https://source.shiqianjiang.cn/script/lx" class="link-item" target="_blank">
+                        <a href="https://source.shiqianjiang.cn/script/lx" class="link-item" target="_blank">
                             <i class="fas fa-cloud-download-alt"></i>
                             <div class="link-text">
-                                <strong>直接可用的源3（点击下载）</strong>
-                                <span>（推荐）直接可用，畅享音乐带来的美好体验</span>
+                                <strong>直接可用的源3（推荐）</strong>
+                                <span>稳定可用</span>
                             </div>
                         </a>
 
-
-                    <div class="link-section">
                         <a href="https://houbowen.lanzouw.com/b00hqakjdc" class="link-item" target="_blank">
                             <i class="fas fa-cloud-download-alt"></i>
                             <div class="link-text">
-                                <strong>源更新链接（最即时的更新，由Hobonn整理）</strong>
-                                <span>新增各大音乐聚合平台，满足你的多种需求</span>
+                                <strong>源更新链接</strong>
+                                <span>最即时的更新，由Hobonn整理</span>
                             </div>
                         </a>
 
-                        
                         <a href="https://github.com/TZB679/USEFUL-LX-MUSIC-SOURCES" class="link-item" target="_blank">
                             <i class="fab fa-github"></i>
                             <div class="link-text">
-                                <strong>使用git命令（直接打开进入源代码页）</strong>
+                                <strong>GitHub源码页</strong>
                                 <span>git clone https://github.com/TZB679/USEFUL-LX-MUSIC-SOURCES</span>
                             </div>
                         </a>
@@ -707,199 +1021,267 @@
                         <a href="https://share.feijipan.com/s/4MW2urSI" class="link-item" target="_blank">
                             <i class="fas fa-code-branch"></i>
                             <div class="link-text">
-                                <strong>lx music 电脑魔改版（独家），支持自定义播放器</strong>
-                                <span>全新播放器样式，带来更美妙的欣赏体验</span>
+                                <strong>LX Music 电脑魔改版</strong>
+                                <span>支持自定义播放器</span>
                             </div>
                         </a>
-                    </div>
-                </div>
 
-                         <a href="https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/%E9%9F%B3%E6%BA%90%E5%AF%BC%E5%85%A5%E6%95%99%E7%A8%8B/%5B%E8%A7%86%E9%A2%91%E7%89%88%5D%E9%9F%B3%E6%BA%90%E5%AF%BC%E5%85%A5%E6%95%99%E7%A8%8B.mp4" class="link-item" target="_blank">
-                            <i class="fas fa-code-branch"></i>
+                        <a href="https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/%E9%9F%B3%E6%BA%90%E5%AF%BC%E5%85%A5%E6%95%99%E7%A8%8B/%5B%E8%A7%86%E9%A2%91%E7%89%88%5D%E9%9F%B3%E6%BA%90%E5%AF%BC%E5%85%A5%E6%95%99%E7%A8%8B.mp4" class="link-item" target="_blank">
+                            <i class="fas fa-video"></i>
                             <div class="link-text">
-                                <strong>使用方法</strong>
+                                <strong>使用方法视频教程</strong>
                                 <span>建议仔细阅读</span>
                             </div>
                         </a>
                     </div>
                 </div>
-
-         
    
+                <!-- 重要提醒 - 现在是醒目的红色 -->
                 <div class="warning-box">
                     <i class="fas fa-exclamation-triangle"></i>
                     <div>
-                        <strong>重要提醒：</strong> 音乐平台不易，请支持正版音乐，本资源仅供学习交流使用，请低调使用！！！
+                        <strong>⚠️ 重要提醒 ⚠️</strong>
+                        <div>音乐平台不易，请支持正版音乐！本资源仅供学习交流使用，请低调使用，严禁用于商业用途！</div>
                     </div>
                 </div>
-            </main>
+            </div>
             
+            <!-- 右侧侧边栏 -->
             <aside class="sidebar">
                 <div class="sidebar-card">
                     <h3><i class="fas fa-info-circle"></i> 最近更新</h3>
                     <div class="update-info">
                         <div class="update-date">
-                            <i class="far fa-calendar-check"></i> 提醒：
+                            <i class="far fa-calendar-check"></i> 2026年2月
                         </div>
                         <p>最近大环境复杂，再次郑重提醒本站所有内容仅供个人学习交流，在线试听使用，严禁用于商业等其他用途！对此造成的任何责任本人概不负责！</p>
                     </div>
-                    <p>本音源集合持续更新，建议定期访问本页面获取最新信息。此外感谢guoyue2010（https://github.com/guoyue2010/lxmusic-）对本项目的大力支持！</p>
-
-                   
+                    <p style="font-size:0.95rem; color:#94a3b8;">感谢guoyue2010对本项目的大力支持！</p>
+                </div>
 
                 <div class="sidebar-card">
                     <h3><i class="fas fa-tags"></i> 标签分类</h3>
                     <div class="tag-list">
                         <span class="tag">LX Music</span>
-                        <span class="tag">音乐分享</span>
+                        <span class="tag">音源分享</span>
+                        <span class="tag">音乐播放器</span>
                         <span class="tag">开源项目</span>
+                        <span class="tag">Hi-Fi音质</span>
                         <span class="tag">资源整理</span>
                     </div>
                 </div>
                 
                 <div class="sidebar-card">
                     <h3><i class="fas fa-user"></i> 关于本人</h3>
-                    <p>音乐爱好者，喜欢整理和分享实用资源。专注于 LX Music 音源的收集与整理，致力于为音乐爱好者提供高质量的音源体验。</p>
-                    <div style="margin-top: 15px;">
-                        <p><i class="fas fa-envelope" style="color: #6a11cb; margin-right: 8px;"></i> 联系方式：有问题进入guoyue2010的QQ群：704034242</p>
+                    <p style="margin-bottom:15px; color:#cbd5e1;">音乐爱好者，专注于 LX Music 音源的收集与整理，致力于为音乐爱好者提供高质量的音源体验。</p>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> QQ群：704034242</p>
+                        <p><i class="fab fa-github"></i> GitHub：TZB679</p>
+                    </div>
+                </div>
+                
+                <div class="sidebar-card">
+                    <h3><i class="fas fa-chart-line"></i> 统计信息</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom:10px;">
+                        <span>音源数量：</span>
+                        <span style="color:#ce93d8; font-weight:600;">20+</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom:10px;">
+                        <span>最后更新：</span>
+                        <span style="color:#ce93d8; font-weight:600;">2026.02</span>
                     </div>
                 </div>
             </aside>
         </div>
-    </div>
-    
+    </main>
+
+    <!-- 页脚 -->
     <footer>
-        <div class="container">
-            <div class="footer-line"></div>
-            <p>© 2026 TZB679 音源分享页面 | 仅供学习交流使用 | 请支持正版音乐</p>
-            <p style="margin-top: 10px; font-size: 0.8rem;">
-                本页面仅为个人整理分享，不用于任何商业用途，请勿大肆宣传！！！
-            </p>
-        </div>
+        <p>© 2026 TZB679 音源分享页面 | 仅供学习交流使用 | 请支持正版音乐</p>
+        <p style="margin-top: 8px; font-size: 0.8rem;">本页面仅为个人整理分享，不用于任何商业用途，请勿大肆宣传！</p>
     </footer>
-    
+
     <!-- 滚动到顶部按钮 -->
     <div class="scroll-to-top" id="scrollToTop">
         <i class="fas fa-arrow-up"></i>
     </div>
-    
-    <!-- 引入粒子效果库 -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    
+
+    <!-- 音频元素 -->
+    <audio id="background-music" loop>
+        <source src="https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/bgm-new.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // 初始化粒子效果
+        // 更新日期时间函数
+        function updateDateTime() {
+            const now = new Date();
+            
+            // 格式化日期
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                weekday: 'long'
+            };
+            const dateStr = now.toLocaleDateString('zh-CN', options);
+            
+            // 格式化时间
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            const timeStr = `${hours}:${minutes}:${seconds}`;
+            
+            document.getElementById('current-date').textContent = dateStr;
+            document.getElementById('current-time').textContent = timeStr;
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+        
+        // 壁纸控制相关元素
+        const backgroundImage = document.getElementById('background-image');
+        const opacitySlider = document.getElementById('opacity-slider');
+        const blurSlider = document.getElementById('blur-slider');
+        const opacityValue = document.getElementById('opacity-value');
+        const blurValue = document.getElementById('blur-value');
+        const imageUpload = document.getElementById('image-upload');
+        const resetBackgroundBtn = document.getElementById('reset-background');
+        const toggleControlsBtn = document.getElementById('toggle-controls');
+        const controlPanel = document.querySelector('.control-panel');
+        
+        // 默认背景图URL
+        const defaultBackgroundUrl = 'https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/Robin-UHD.jpg';
+        
+        // 初始化显示
+        opacityValue.textContent = `${opacitySlider.value}%`;
+        blurValue.textContent = `${blurSlider.value}px`;
+        
+        // 更新背景效果
+        function updateBackgroundEffect() {
+            const opacity = opacitySlider.value / 100;
+            const blur = `${blurSlider.value}px`;
+            
+            backgroundImage.style.opacity = opacity;
+            backgroundImage.style.filter = `blur(${blur})`;
+            
+            opacityValue.textContent = `${opacitySlider.value}%`;
+            blurValue.textContent = `${blurSlider.value}px`;
+        }
+        
+        opacitySlider.addEventListener('input', updateBackgroundEffect);
+        blurSlider.addEventListener('input', updateBackgroundEffect);
+        
+        // 图片上传处理
+        imageUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    backgroundImage.src = e.target.result;
+                    updateBackgroundEffect();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // 重置背景
+        resetBackgroundBtn.addEventListener('click', function() {
+            backgroundImage.src = defaultBackgroundUrl;
+            opacitySlider.value = 70;
+            blurSlider.value = 3;
+            updateBackgroundEffect();
+        });
+        
+        // 切换控制面板
+        let isPanelCollapsed = false;
+        toggleControlsBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            isPanelCollapsed = !isPanelCollapsed;
+            controlPanel.classList.toggle('collapsed');
+            const icon = toggleControlsBtn.querySelector('i');
+            icon.className = isPanelCollapsed ? 'fas fa-chevron-left' : 'fas fa-chevron-right';
+        });
+        
+        // 点击其他地方关闭面板（但保留按钮）
+        document.addEventListener('click', function(event) {
+            if (!controlPanel.contains(event.target) && 
+                !toggleControlsBtn.contains(event.target) && 
+                !isPanelCollapsed) {
+                controlPanel.classList.add('collapsed');
+                const icon = toggleControlsBtn.querySelector('i');
+                icon.className = 'fas fa-chevron-left';
+                isPanelCollapsed = true;
+            }
+        });
+        
+        // 阻止面板内点击关闭
+        controlPanel.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+        
+        // 音乐控制
+        const audio = document.getElementById('background-music');
+        const musicControl = document.getElementById('music-control');
+        
+        audio.volume = 0.3;
+        
+        musicControl.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play().catch(() => {
+                    console.log('自动播放失败，需要用户交互');
+                });
+                this.classList.remove('paused');
+            } else {
+                audio.pause();
+                this.classList.add('paused');
+            }
+        });
+        
+        // 尝试自动播放
+        audio.play().catch(() => {
+            musicControl.classList.add('paused');
+        });
+        
+        // 滚动到顶部
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 标签点击效果
+        const tags = document.querySelectorAll('.tag');
+        tags.forEach(tag => {
+            tag.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+        
+        // 页面加载完成后的动画
         document.addEventListener('DOMContentLoaded', function() {
-            // 粒子效果配置
-            particlesJS("particles-js", {
-                particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
-                    color: { value: "#6a11cb" },
-                    shape: { type: "circle" },
-                    opacity: { value: 0.5, random: true },
-                    size: { value: 3, random: true },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: "#6a11cb",
-                        opacity: 0.2,
-                        width: 1
-                    },
-                    move: {
-                        enable: true,
-                        speed: 2,
-                        direction: "none",
-                        random: true,
-                        straight: false,
-                        out_mode: "out",
-                        bounce: false
-                    }
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: {
-                        onhover: { enable: true, mode: "repulse" },
-                        onclick: { enable: true, mode: "push" }
-                    }
-                },
-                retina_detect: true
-            });
-            
-            // 音乐控制
-            const audio = document.getElementById('background-music');
-            const musicControl = document.getElementById('music-control');
-            
-            // 尝试播放音乐
-            audio.play().catch(function(error) {
-                console.log('自动播放被阻止，需要用户交互:', error);
-                musicControl.classList.add('paused');
-            });
-            
-            // 音乐控制按钮事件
-            musicControl.addEventListener('click', function() {
-                if (audio.paused) {
-                    audio.play();
-                    this.classList.remove('paused');
-                } else {
-                    audio.pause();
-                    this.classList.add('paused');
-                }
-            });
-            
-            // 滚动到顶部按钮
-            const scrollToTopBtn = document.getElementById('scrollToTop');
-            
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 300) {
-                    scrollToTopBtn.classList.add('visible');
-                } else {
-                    scrollToTopBtn.classList.remove('visible');
-                }
-            });
-            
-            scrollToTopBtn.addEventListener('click', function() {
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            });
-            
-            // 标签点击效果
-            const tags = document.querySelectorAll('.tag');
-            tags.forEach(tag => {
-                tag.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.9)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 300);
-                });
-            });
-            
-            // 链接点击效果
-            const links = document.querySelectorAll('.link-item');
-            links.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    // 添加点击反馈
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 300);
-                });
-            });
-            
-            // 卡片进入视口时的动画
+            // 为所有元素添加淡入效果
             const cards = document.querySelectorAll('.card, .sidebar-card');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            cards.forEach(card => {
-                observer.observe(card);
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
             });
         });
     </script>
