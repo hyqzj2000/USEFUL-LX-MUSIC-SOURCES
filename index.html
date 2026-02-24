@@ -736,7 +736,254 @@
             animation: pulse 2s infinite;
         }
         
+        /* ========== 彩蛋按钮样式 ========== */
+        .egg-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 100px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff9800, #f44336);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            animation: eggPulse 2s infinite;
+        }
+        
+        .egg-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(255, 152, 0, 0.6);
+        }
+        
+        .egg-btn:hover .egg-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-10px);
+        }
+        
+        @keyframes eggPulse {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(244, 67, 54, 0.6);
+            }
+        }
+        
+        /* 工具提示 */
+        .egg-tooltip {
+            position: absolute;
+            left: 60px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 101;
+        }
+        
+        .egg-tooltip::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 8px 8px 8px 0;
+            border-style: solid;
+            border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
+        }
+        
+        /* 彩蛋弹窗 */
+        .egg-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .egg-modal.show {
+            display: flex;
+        }
+        
+        .egg-modal-content {
+            background: linear-gradient(135deg, #1e1a3a, #2d1b3a);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+            animation: slideUp 0.4s ease;
+        }
+        
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .egg-modal-header {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 152, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .egg-modal-header i {
+            font-size: 1.8rem;
+            color: #ff9800;
+            animation: eggPulse 1s infinite;
+        }
+        
+        .egg-modal-header h3 {
+            font-size: 1.3rem;
+            color: #ffb74d;
+            margin: 0;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .egg-modal-close {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+        
+        .egg-modal-close:hover {
+            color: #ff9800;
+            transform: scale(1.1);
+        }
+        
+        .egg-modal-body {
+            padding: 30px 20px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .egg-loading {
+            text-align: center;
+        }
+        
+        .egg-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 152, 0, 0.2);
+            border-top: 4px solid #ff9800;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .egg-success, .egg-error {
+            text-align: center;
+        }
+        
+        .egg-success i {
+            font-size: 3rem;
+            color: #4caf50;
+            margin-bottom: 15px;
+        }
+        
+        .egg-error i {
+            font-size: 3rem;
+            color: #f44336;
+            margin-bottom: 15px;
+        }
+        
+        .egg-filename {
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 152, 0, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #ffb74d;
+            word-break: break-all;
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+        
+        .egg-modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid rgba(255, 152, 0, 0.2);
+            text-align: center;
+        }
+        
+        .egg-btn-close {
+            background: linear-gradient(135deg, #ff9800, #f44336);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .egg-btn-close:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 152, 0, 0.4);
+        }
+        
         /* 响应式设计 */
+        @media (max-width: 768px) {
+            .egg-btn {
+                left: 90px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+            
+            .music-control {
+                left: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+            
+            .egg-tooltip {
+                font-size: 0.8rem;
+                padding: 5px 10px;
+            }
+        }
+        
         @media (max-width: 992px) {
             .content-grid {
                 grid-template-columns: 1fr;
@@ -765,60 +1012,6 @@
             }
         }
         
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 1.5rem 1rem;
-            }
-            
-            .logo-text h1 {
-                font-size: 1.5rem;
-            }
-            
-            .card h2 {
-                font-size: 1.4rem;
-            }
-            
-            .link-item {
-                padding: 12px;
-            }
-            
-            .link-item i {
-                font-size: 1.3rem;
-            }
-            
-            .music-control, .scroll-to-top {
-                width: 45px;
-                height: 45px;
-                font-size: 1.3rem;
-            }
-            
-            .music-control {
-                left: 15px;
-                bottom: 15px;
-            }
-            
-            .scroll-to-top {
-                right: 15px;
-                bottom: 15px;
-            }
-            
-            .warning-box {
-                padding: 18px 15px;
-            }
-            
-            .warning-box i {
-                font-size: 2rem;
-            }
-            
-            .warning-box strong {
-                font-size: 1.1rem;
-            }
-            
-            .warning-box div div {
-                font-size: 0.95rem;
-            }
-        }
-        
         /* 加载动画 */
         .loading {
             display: inline-block;
@@ -828,10 +1021,6 @@
             border-radius: 50%;
             border-top-color: #9c27b0;
             animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
         
         /* 错误提示 */
@@ -904,6 +1093,41 @@
     <!-- 音乐控制按钮 -->
     <div class="music-control" id="music-control">
         <i class="fas fa-music"></i>
+    </div>
+
+    <!-- 彩蛋按钮 -->
+    <div class="egg-btn" id="eggBtn">
+        <i class="fas fa-gift"></i>
+        <span class="egg-tooltip">🎁 点一下，有惊喜</span>
+    </div>
+
+    <!-- 彩蛋弹窗 -->
+    <div class="egg-modal" id="eggModal">
+        <div class="egg-modal-content">
+            <div class="egg-modal-header">
+                <i class="fas fa-music"></i>
+                <h3>🎵 恭喜触发音乐彩蛋 🎵</h3>
+                <button class="egg-modal-close" id="eggModalClose">&times;</button>
+            </div>
+            <div class="egg-modal-body" id="eggModalBody">
+                <div class="egg-loading" id="eggLoading">
+                    <div class="egg-spinner"></div>
+                    <p>请坐和放宽，好东西马上就来...</p>
+                </div>
+                <div class="egg-success" id="eggSuccess" style="display: none;">
+                    <i class="fas fa-check-circle"></i>
+                    <p id="eggMessage">Congratulation！歌曲已开始下载！</p>
+                    <p class="egg-filename" id="eggFilename"></p>
+                </div>
+                <div class="egg-error" id="eggError" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p id="eggErrorMessage"></p>
+                </div>
+            </div>
+            <div class="egg-modal-footer">
+                <button class="egg-btn-close" id="eggBtnClose">关闭</button>
+            </div>
+        </div>
     </div>
 
     <!-- 头部区域 -->
@@ -994,11 +1218,11 @@
                             </div>
                         </a>
 
-                        <a href="https://source.shiqianjiang.cn/script/lx" class="link-item" target="_blank">
+                        <a href="https://fastly.jsdelivr.net/gh/Huibq/keep-alive/render_api.js" class="link-item" target="_blank">
                             <i class="fas fa-cloud-download-alt"></i>
                             <div class="link-text">
-                                <strong>直接可用的源3（推荐）</strong>
-                                <span>稳定可用</span>
+                                <strong>直接可用的源3</strong>
+                                <span>部分平台有限制</span>
                             </div>
                         </a>
 
@@ -1013,7 +1237,7 @@
                         <a href="https://github.com/TZB679/USEFUL-LX-MUSIC-SOURCES" class="link-item" target="_blank">
                             <i class="fab fa-github"></i>
                             <div class="link-text">
-                                <strong>GitHub源码页</strong>
+                                <strong>使用git命令（直接打开进入源代码页）</strong>
                                 <span>git clone https://github.com/TZB679/USEFUL-LX-MUSIC-SOURCES</span>
                             </div>
                         </a>
@@ -1022,7 +1246,7 @@
                             <i class="fas fa-code-branch"></i>
                             <div class="link-text">
                                 <strong>LX Music 电脑魔改版</strong>
-                                <span>支持自定义播放器</span>
+                                <span>支持自定义播放器样式</span>
                             </div>
                         </a>
 
@@ -1316,6 +1540,118 @@
                     this.style.transform = '';
                 }, 200);
             });
+        });
+        
+        // ========== 彩蛋功能 ==========
+        const eggBtn = document.getElementById('eggBtn');
+        const eggModal = document.getElementById('eggModal');
+        const eggModalClose = document.getElementById('eggModalClose');
+        const eggBtnClose = document.getElementById('eggBtnClose');
+        const eggLoading = document.getElementById('eggLoading');
+        const eggSuccess = document.getElementById('eggSuccess');
+        const eggError = document.getElementById('eggError');
+        const eggMessage = document.getElementById('eggMessage');
+        const eggFilename = document.getElementById('eggFilename');
+        const eggErrorMessage = document.getElementById('eggErrorMessage');
+        
+        // txt文件中的歌曲链接列表
+        const songUrls = [
+            'https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/example1.mp3',
+            'https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/example2.mp3',
+            'https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/example3.mp3',
+            'https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/example4.mp3',
+            'https://ghproxy.net/https://raw.githubusercontent.com/TZB679/USEFUL-LX-MUSIC-SOURCES/refs/heads/main/.github/workflows/example5.mp3'
+        ];
+        
+        // 歌曲名称（从URL中提取）
+        const songNames = songUrls.map(url => {
+            const parts = url.split('/');
+            return parts[parts.length - 1];
+        });
+        
+        // 显示弹窗
+        function showModal() {
+            eggModal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // 禁止背景滚动
+        }
+        
+        // 隐藏弹窗
+        function hideModal() {
+            eggModal.classList.remove('show');
+            document.body.style.overflow = ''; // 恢复滚动
+            // 重置显示状态
+            eggLoading.style.display = 'block';
+            eggSuccess.style.display = 'none';
+            eggError.style.display = 'none';
+        }
+        
+        // 随机下载歌曲
+        function downloadRandomSong() {
+            // 显示加载状态
+            eggLoading.style.display = 'block';
+            eggSuccess.style.display = 'none';
+            eggError.style.display = 'none';
+            
+            // 随机选择一个索引
+            const randomIndex = Math.floor(Math.random() * songUrls.length);
+            const selectedUrl = songUrls[randomIndex];
+            const selectedName = songNames[randomIndex];
+            
+            // 模拟加载延迟（让用户看到动画）
+            setTimeout(() => {
+                try {
+                    // 创建隐藏的a标签进行下载
+                    const link = document.createElement('a');
+                    link.href = selectedUrl;
+                    link.download = selectedName; // 设置下载文件名
+                    link.target = '_blank';
+                    link.style.display = 'none';
+                    
+                    // 添加到body并触发点击
+                    document.body.appendChild(link);
+                    link.click();
+                    
+                    // 移除链接
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                    }, 100);
+                    
+                    // 显示成功信息
+                    eggLoading.style.display = 'none';
+                    eggSuccess.style.display = 'block';
+                    eggFilename.textContent = `📁 ${selectedName}`;
+                    
+                    // 播放成功音效（可选）
+                    // 可以添加一个简单的提示音
+                    
+                } catch (error) {
+                    // 显示错误信息
+                    eggLoading.style.display = 'none';
+                    eggError.style.display = 'block';
+                    eggErrorMessage.textContent = '下载失败，请稍后重试！';
+                    console.error('下载失败:', error);
+                }
+            }, 1500); // 1.5秒延迟，让用户看到加载动画
+        }
+        
+        // 彩蛋按钮点击事件
+        eggBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showModal();
+            downloadRandomSong();
+        });
+        
+        // 关闭弹窗（点击×）
+        eggModalClose.addEventListener('click', hideModal);
+        
+        // 关闭弹窗（点击关闭按钮）
+        eggBtnClose.addEventListener('click', hideModal);
+        
+        // 点击弹窗外部关闭
+        eggModal.addEventListener('click', function(e) {
+            if (e.target === eggModal) {
+                hideModal();
+            }
         });
         
         // 页面加载完成后的动画
