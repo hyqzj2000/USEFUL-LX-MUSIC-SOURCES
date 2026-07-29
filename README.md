@@ -4,13 +4,12 @@
 搜集了自本人用LX music 以来使用的音源，持续更新~
 
 使用协议：
-1.本压缩包由“Hobonn”倾情整理，TZB679发布~
+1.本内容为@guoyue2010 lxmusic- 的分支项目，用于分流(hobonn不搞了😭) 项目地址：https://github.com/guoyue2010/lxmusic-/releases
 2.提供的所有音源并非本人创作，所有音源严禁由于商业用途~
 3.本人仅整理分享，并不接受任何投诉信息~
 4.本人所作不触及法律界限，请不要散传谣言~
 5.在此致敬并感谢所有音源开发者的努力与付出~
 
-压缩包源更新链接           https://houbowen.lanzouw.com/b00hqakjdc    
 
 本项目支持git,命令：
 git clone https://github.com/TZB679/USEFUL-LX-MUSIC-SOURCES
